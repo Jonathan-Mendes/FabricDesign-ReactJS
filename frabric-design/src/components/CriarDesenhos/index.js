@@ -45,49 +45,46 @@ export default function CriarDesenhos() {
     nomeTecido: '',
     nomeDesenho: '',
     do: '',
-    categoria: ''
-    // weight: '',
-    // weightRange: '',
-    // showPassword: false,
+    categoria: '',
+    zona1: '',
+    zona2: '',
+    pre1: '',
+    pre2: '',
+    pre3: ''
   });
-  // const [state, setState] = React.useState({
-  //   age: '',
-  // });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
   return (
     <div className={classes.root}>
       <Container>
-        <FormControl fullWidth className={classes.margin} variant="outlined">
-          <InputLabel htmlFor="nomeTecido">Nome do Tecido</InputLabel>
-          <OutlinedInput
-            id="nomeTecido"
-            value={values.nomeTecido}
-            onChange={handleChange('nomeTecido')}
-            labelWidth={120}
-          />
-        </FormControl>
-        <FormControl fullWidth className={classes.margin} variant="outlined">
-          <InputLabel htmlFor="nomeDesenho">Nome do Desenho</InputLabel>
-          <OutlinedInput
-            id="nomeDesenho"
-            value={values.nomeDesenho}
-            onChange={handleChange('nomeDesenho')}
-            labelWidth={135}
-          />
-        </FormControl>
         <Grid container spacing={1}>
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <InputLabel htmlFor="nomeTecido">Nome do Tecido</InputLabel>
+              <OutlinedInput
+                id="nomeTecido"
+                value={values.nomeTecido}
+                onChange={handleChange('nomeTecido')}
+                labelWidth={120}
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <InputLabel htmlFor="nomeDesenho">Nome do Desenho</InputLabel>
+              <OutlinedInput
+                id="nomeDesenho"
+                value={values.nomeDesenho}
+                onChange={handleChange('nomeDesenho')}
+                labelWidth={135}
+              />
+            </FormControl>
+          </Grid>
+
           <Grid item xs={12} sm={12} md={6} lg={6}>
             <FormControl fullWidth className={classes.margin} variant="outlined">
               <InputLabel htmlFor="do">Quantidade de Repetição</InputLabel>
@@ -120,6 +117,67 @@ export default function CriarDesenhos() {
                 <option value={'tapetes'}>Tapetes</option>
                 <option value={'cortinas'}>Cortinas</option>
               </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={6} lg={6}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <InputLabel htmlFor="zona1">Zona 1</InputLabel>
+              <OutlinedInput
+                id="zona1"
+                value={values.zona1}
+                onChange={handleChange('zona1')}
+                labelWidth={50}
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={6} lg={6}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <InputLabel htmlFor="zona2">Zona 2</InputLabel>
+              <OutlinedInput
+                id="zona2"
+                value={values.zona2}
+                onChange={handleChange('zona2')}
+                labelWidth={50}
+              />
+            </FormControl>
+          </Grid>
+
+
+          <Grid item xs={12} sm={12} md={4} lg={4}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <InputLabel htmlFor="pre1">Pre 1</InputLabel>
+              <OutlinedInput
+                id="pre1"
+                value={values.pre1}
+                onChange={handleChange('pre1')}
+                labelWidth={40}
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={4} lg={4}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <InputLabel htmlFor="pre2">Pre 2</InputLabel>
+              <OutlinedInput
+                id="pre2"
+                value={values.pre2}
+                onChange={handleChange('pre2')}
+                labelWidth={40}
+              />
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={4} lg={4}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <InputLabel htmlFor="pre3">Pre 3</InputLabel>
+              <OutlinedInput
+                id="pre3"
+                value={values.pre3}
+                onChange={handleChange('pre3')}
+                labelWidth={40}
+              />
             </FormControl>
           </Grid>
         </Grid>

@@ -62,7 +62,7 @@ function NavigationDrawer(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
-    var [indexGlobal, setIndexGlobal] =  React.useState(0);
+    var [indexGlobal, setIndexGlobal] =  React.useState(1);
 
     const handleClick = (index) => {
         setIndexGlobal(indexGlobal = index);
