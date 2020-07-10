@@ -1,0 +1,40 @@
+.fontNavbar{
+    font-size: 18px;
+}
+
+.link:hover{
+    color: #6a0a1b !important;
+}
+
+.navColor{
+    background-color: #6a0a1b !important;
+}
+
+.menuColor{
+    background-color: #6a0a1b !important;
+}
+
+.hoverItem span{
+    padding: 8px;
+    border-radius: 30px;
+}
+
+.hoverItem:hover span{
+    color: #6a0a1b !important;
+    background-color: white;
+}
+
+#title{
+    font-family: 'Russo One', sans-serif !important;
+    /* font-family: 'Solway', serif; */
+}
+
+span{
+    font-family: 'Solway', serif;
+}
+
+@media screen and (max-width: 400px){
+    .title, #title{
+        font-size: 20px !important;
+    }
+}

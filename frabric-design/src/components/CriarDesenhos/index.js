@@ -1,214 +1,157 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import FilledInput from '@material-ui/core/FilledInput';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import TextField from '@material-ui/core/TextField';
-import Visibility from '@material-ui/icons/Visibility';
-import Container from '@material-ui/core/Container';
-import Select from '@material-ui/core/Select';
-import Grid from '@material-ui/core/Grid';
+import React, { Component } from 'react';
+import { Col, Row, Button, Form, FormGroup, Label, Input, Container } from 'reactstrap';
+import './criarDesenhos.css'
+import firebaseService from '../../BAAS/services/firebaseService';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flexGrow: 1
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-  margin: {
-    margin: theme.spacing(1),
-  },
-  withoutLabel: {
-    marginTop: theme.spacing(3),
-  },
-  textField: {
-    width: '25ch',
-  },
-}));
+export default class CriarDesenhos extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nomeTecido: '',
+      nomeDesenho: '',
+      DO: '',
+      categoria: '',
+      zona1: '',
+      zona2: '',
+      zona3: '',
+      pre1: '',
+      pre2: '',
+      pre3: '',
+      pre4: ''
+    }
 
-export default function CriarDesenhos() {
-  const classes = useStyles();
-  const [values, setValues] = React.useState({
-    nomeTecido: '',
-    nomeDesenho: '',
-    do: '',
-    categoria: '',
-    zona1: '',
-    zona2: '',
-    zona3: '',
-    pre1: '',
-    pre2: '',
-    pre3: '',
-    pre4: '',
-  });
+    this.save = this.save.bind(this);
+    this.resetValues = this.resetValues.bind(this);
+  }
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
+  async save(e) {
+    e.preventDefault();
+    const { nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4 } = this.state;
+    let response = await firebaseService.createDesenho(nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
+    if (response)
+      this.resetValues()
+  }
 
-  return (
-    <div className={classes.root}>
-      <Container>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="nomeTecido">Nome do Tecido</InputLabel>
-              <OutlinedInput
-                id="nomeTecido"
-                value={values.nomeTecido}
-                onChange={handleChange('nomeTecido')}
-                labelWidth={120}
-              />
-            </FormControl>
-          </Grid>
+  resetValues() {
+    this.setState({
+      nomeTecido: '',
+      nomeDesenho: '',
+      DO: '',
+      categoria: '',
+      zona1: '',
+      zona2: '',
+      zona3: '',
+      pre1: '',
+      pre2: '',
+      pre3: '',
+      pre4: ''
+    })
+  }
 
-          <Grid item xs={12} sm={12} md={12} lg={12}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="nomeDesenho">Nome do Desenho</InputLabel>
-              <OutlinedInput
-                id="nomeDesenho"
-                value={values.nomeDesenho}
-                onChange={handleChange('nomeDesenho')}
-                labelWidth={135}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={6} lg={6}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="do">Quantidade de Repetição</InputLabel>
-              <OutlinedInput
-                id="do"
-                type="number"
-                value={values.do}
-                onChange={handleChange('do')}
-                labelWidth={180}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={6} lg={6}>
-            <FormControl fullWidth variant="outlined" className={classes.formControl}>
-              <InputLabel htmlFor="categoria">Categoria</InputLabel>
-              <Select
-                native
-                value={values.categoria}
-                onChange={handleChange('categoria')}
-                label="Categoria"
-                labelWidth={70}
-                inputProps={{
-                  name: 'categoria',
-                  id: 'categoria',
-                }}
-              >
-                <option aria-label="None" value="" />
-                <option value={'almofadas'}>Almofadas</option>
-                <option value={'cortinas'}>Cortinas</option>
-                <option value={'mantas'}>Mantas</option>
-                <option value={'passadeiras'}>Passadeiras</option>
-                <option value={'tapetes'}>Tapetes</option>
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="zona1">Zona 1</InputLabel>
-              <OutlinedInput
-                id="zona1"
-                value={values.zona1}
-                onChange={handleChange('zona1')}
-                labelWidth={50}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="zona2">Zona 2</InputLabel>
-              <OutlinedInput
-                id="zona2"
-                value={values.zona2}
-                onChange={handleChange('zona2')}
-                labelWidth={50}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4} lg={4}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="zona3">Zona 3</InputLabel>
-              <OutlinedInput
-                id="zona3"
-                value={values.zona3}
-                onChange={handleChange('zona3')}
-                labelWidth={50}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={3} lg={3}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="pre1">Pre 1</InputLabel>
-              <OutlinedInput
-                id="pre1"
-                value={values.pre1}
-                onChange={handleChange('pre1')}
-                labelWidth={40}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={3} lg={3}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="pre2">Pre 2</InputLabel>
-              <OutlinedInput
-                id="pre2"
-                value={values.pre2}
-                onChange={handleChange('pre2')}
-                labelWidth={40}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={3} lg={3}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="pre3">Pre 3</InputLabel>
-              <OutlinedInput
-                id="pre3"
-                value={values.pre3}
-                onChange={handleChange('pre3')}
-                labelWidth={40}
-              />
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={3} lg={3}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="pre4">Pre 4</InputLabel>
-              <OutlinedInput
-                id="pre4"
-                value={values.pre4}
-                onChange={handleChange('pre4')}
-                labelWidth={40}
-              />
-            </FormControl>
-          </Grid>
-        </Grid>
+  render() {
+    const state = this.state;
+    return (
+      <Container className="d-flex justify-content-center align-items-center containerH">
+        <Form onSubmit={(e) => this.save(e)} method="post">
+          <Row form>
+            <Col md={12} sm={12}>
+              <FormGroup>
+                <Label for="nomeTecido">Nome do Tecido</Label>
+                <Input type="text" name="nomeTecido" id="nomeTecido" placeholder="Nome do Tecido"
+                  onChange={(e) => this.setState({ nomeTecido: e.target.value })} value={state.nomeTecido} required />
+              </FormGroup>
+            </Col>
+            <Col md={12} sm={12}>
+              <FormGroup>
+                <Label for="nomeDesenho">Nome do Desenho</Label>
+                <Input type="text" name="nomeDesenho" id="nomeDesenho" placeholder="Nome do Desenho"
+                  onChange={(e) => this.setState({ nomeDesenho: e.target.value })} value={state.nomeDesenho} required />
+              </FormGroup>
+            </Col>
+            <Col md={6} sm={12}>
+              <FormGroup>
+                <Label for="do">Quantidade de Repetição (DO)</Label>
+                <Input type="number" name="do" id="do" placeholder="DO"
+                  onChange={(e) => this.setState({ DO: e.target.value })} value={state.DO} required />
+              </FormGroup>
+            </Col>
+            <Col md={6} sm={12}>
+              <FormGroup>
+                <Label for="categoria">Categoria</Label>
+                <Input type="select" name="categoria" id="categoria"
+                  onChange={(e) => this.setState({ categoria: e.target.value })} value={state.categoria} required >
+                  <option value=''></option>
+                  <option value='almofadas'>Almofadas</option>
+                  <option value='cortinas'>Cortinas</option>
+                  <option value='mantas'>Mantas</option>
+                  <option value='passadeiras'>Passadeiras</option>
+                  <option value='tapetes'>Tapetes</option>
+                </Input>
+              </FormGroup>
+            </Col>
+            <Col md={4} sm={12}>
+              <FormGroup>
+                <Label for="zona1">Zona 1</Label>
+                <Input type="number" name="zona1" id="zona1" placeholder="Zona 1"
+                  onChange={(e) => this.setState({ zona1: e.target.value })} value={state.zona1} required />
+              </FormGroup>
+            </Col>
+            <Col md={4} sm={12}>
+              <FormGroup>
+                <Label for="zona2">Zona 2</Label>
+                <Input type="number" name="zona2" id="zona2" placeholder="Zona 2"
+                  onChange={(e) => this.setState({ zona2: e.target.value })} value={state.zona2} />
+              </FormGroup>
+            </Col>
+            <Col md={4} sm={12}>
+              <FormGroup>
+                <Label for="zona3">Zona 3</Label>
+                <Input type="number" name="zona3" id="zona3" placeholder="Zona 3"
+                  onChange={(e) => this.setState({ zona3: e.target.value })} value={state.zona3} />
+              </FormGroup>
+            </Col>
+            <Col md={3} sm={12}>
+              <FormGroup>
+                <Label for="pre1">Pre 1</Label>
+                <Input type="text" name="pre1" id="pre1" placeholder="Pre 1"
+                  onChange={(e) => this.setState({ pre1: e.target.value })} value={state.pre1} required />
+              </FormGroup>
+            </Col>
+            <Col md={3} sm={12}>
+              <FormGroup>
+                <Label for="pre2">Pre 2</Label>
+                <Input type="text" name="pre2" id="pre2" placeholder="Pre 2"
+                  onChange={(e) => this.setState({ pre2: e.target.value })} value={state.pre2} />
+              </FormGroup>
+            </Col>
+            <Col md={3} sm={12}>
+              <FormGroup>
+                <Label for="pre3">Pre 3</Label>
+                <Input type="text" name="pre3" id="pre3" placeholder="Pre 3"
+                  onChange={(e) => this.setState({ pre3: e.target.value })} value={state.pre3} />
+              </FormGroup>
+            </Col>
+            <Col md={3} sm={12}>
+              <FormGroup>
+                <Label for="pre4">Pre 4</Label>
+                <Input type="text" name="pre4" id="pre4" placeholder="Pre 4"
+                  onChange={(e) => this.setState({ pre4: e.target.value })} value={state.pre4} />
+              </FormGroup>
+            </Col>
+            <Col md={6} sm={12}>
+              <FormGroup className="d-flex justify-content-center">
+                <Button type="submit" color="success" className="w-100">Salvar</Button>
+              </FormGroup>
+            </Col>
+            <Col md={6} sm={12}>
+              <FormGroup className="d-flex justify-content-center">
+                <Button color="danger" className="w-100"
+                onClick={() => this.resetValues()}>Cancelar</Button>
+              </FormGroup>
+            </Col>
+          </Row>
+        </Form>
       </Container>
-    </div>
-  );
+    )
+  }
 }
