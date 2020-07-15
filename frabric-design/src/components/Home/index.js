@@ -34,7 +34,7 @@ export default class Teste extends Component {
                         <Link to={{ pathname: "/desenhos" }} className="link">
                             <Card className="cardHome d-flex justify-content-center align-items-center">
                                 <AiFillAppstore className="iconsHome" />
-                                <CardText className="text-center mt-3">Criar Desenhos</CardText>
+                                <CardText className="text-center mt-3">Desenhos</CardText>
                             </Card>
                         </Link>
                     </Col>

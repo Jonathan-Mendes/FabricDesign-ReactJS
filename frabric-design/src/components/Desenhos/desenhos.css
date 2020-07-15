@@ -1,0 +1,17 @@
+.recuo{
+    margin-top: 8% !important;
+}
+
+.listGroup{
+}
+
+.listItem{
+    border-color: #800000 !important;
+    color: black !important;
+}
+
+@media (max-width: 770px) {
+    .recuo{
+        margin-top: 20% !important;
+    }   
+}

@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import firebaseService from '../../BAAS/services/firebaseService';
+import { ListGroupItem, ListGroup, Spinner, Container } from 'reactstrap';
+import { IoIosArrowForward } from 'react-icons/io';
+import './desenhos.css';
 
 export default class Desenhos extends Component {
     constructor(props) {
@@ -11,7 +14,7 @@ export default class Desenhos extends Component {
     }
 
     async componentDidMount() {
-        const state = this.state; 
+        const state = this.state;
         let desenhosAux = []
         let response = firebaseService.getDesenhos();
         await response.then(function (val) {
@@ -24,19 +27,27 @@ export default class Desenhos extends Component {
             desenhos: state.desenhos = desenhosAux,
             loading: true
         })
-        console.log(state.desenhos)
     }
 
     render() {
         return this.state.loading ? (
-            <div>
-                <h1>teste</h1>
-                {this.state.desenhos.map((desenho) => {
-                    return(
-                        <h1>{desenho.nomeTecido}</h1>
-                    )
-                })}
-            </div>
-        ) : <h1>Carregando</h1>;
+            <Container>
+                <ListGroup className="recuo listGroup">
+                    {this.state.desenhos.map((desenho) => {
+                        return (
+                            <ListGroupItem className="listItem d-flex justify-content-between"
+                            tag="a" href={`/desenho/${desenho.id}`} action>
+                                 <span>{desenho.nomeTecido}</span>
+                                 <IoIosArrowForward />
+                            </ListGroupItem>
+                        )
+                    })}
+                </ListGroup>
+            </Container>
+        ) : (
+            <Container className="d-flex vh-100 justify-content-center align-items-center">
+                <Spinner style={{ width: '6rem', height: '6rem' }} id="spinner" />
+            </Container>
+        )
     }
 }

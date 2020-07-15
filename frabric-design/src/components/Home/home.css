@@ -19,7 +19,7 @@
     border: 2px solid #6a0a1b !important;
     border-radius: 30px !important;
     font-size: 20px;
-    font-family: 'Rubik', sans-serif;
+    /* font-family: 'Rubik', sans-serif; */
 }
 
 .cardHome:hover{

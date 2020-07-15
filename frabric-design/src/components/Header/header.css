@@ -25,12 +25,12 @@
 }
 
 #title{
-    font-family: 'Russo One', sans-serif !important;
+    /* font-family: 'Russo One', sans-serif !important; */
     /* font-family: 'Solway', serif; */
 }
 
 span{
-    font-family: 'Solway', serif;
+    /* font-family: 'Solway', serif; */
 }
 
 @media screen and (max-width: 400px){

@@ -52,7 +52,7 @@ export default class CriarDesenhos extends Component {
     const state = this.state;
     return (
       <Container className="d-flex justify-content-center align-items-center containerH">
-        <Form onSubmit={(e) => this.save(e)} method="post">
+        <Form onSubmit={(e) => this.save(e)} method="post" className="recuo">
           <Row form>
             <Col md={12} sm={12}>
               <FormGroup>
