@@ -46,6 +46,7 @@ export default class CriarDesenhos extends Component {
       pre3: '',
       pre4: ''
     })
+    window.scrollTo(0, 0);
   }
 
   render() {

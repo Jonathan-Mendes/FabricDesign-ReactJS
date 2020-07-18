@@ -2,7 +2,25 @@
     margin-top: 8% !important;
 }
 
-.listGroup{
+/* .pesquisar{
+    z-index: 1;
+    overflow: hidden !important;
+    position: fixed !important;
+    top: 20% !important; 
+} */
+
+#naoEncontrado{
+    color: #800000;
+}
+
+#pesquisar{
+    border-color: #800000 !important;
+    color: black !important;
+}
+
+#pesquisar:focus{
+    box-shadow: 0 0 0 0;
+    outline: 0;
 }
 
 .listItem{

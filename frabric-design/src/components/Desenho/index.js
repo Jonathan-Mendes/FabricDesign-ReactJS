@@ -45,6 +45,7 @@ export default class CriarDesenhos extends Component {
     this.setState({
       read: false
     })
+    window.scrollTo(0, 0);
   }
 
   async save(e) {
@@ -73,6 +74,7 @@ export default class CriarDesenhos extends Component {
       pre4: state.pre4Old,
       read: true
     })
+    window.scrollTo(0, 0);
   }
 
   async componentDidMount() {
@@ -119,7 +121,7 @@ export default class CriarDesenhos extends Component {
                 <Input type="text" name="nomeTecido" id="nomeTecido" placeholder="Nome do Tecido"
                   readOnly={state.read} 
                   className={state.read ? "text-danger font-weight-bold" : ""}
-                  onChange={(e) => this.setState({ nomeTecido: e.target.value })} value={state.nomeTecido} required />
+                  onChange={(e) => this.setState({ nomeTecido: e.target.value })} value={state.nomeTecido.toUpperCase()} required />
               </FormGroup>
             </Col>
             <Col md={12} sm={12}>
@@ -128,7 +130,7 @@ export default class CriarDesenhos extends Component {
                 <Input type="text" name="nomeDesenho" id="nomeDesenho" placeholder="Nome do Desenho"
                   readOnly={state.read} 
                   className={state.read ? "text-danger font-weight-bold" : ""}
-                  onChange={(e) => this.setState({ nomeDesenho: e.target.value })} value={state.nomeDesenho} required />
+                  onChange={(e) => this.setState({ nomeDesenho: e.target.value })} value={state.nomeDesenho.toUpperCase()} required />
               </FormGroup>
             </Col>
             <Col md={6} sm={12}>
@@ -148,7 +150,7 @@ export default class CriarDesenhos extends Component {
                   <Input type="text" name="categoria" id="categoria" placeholder="Categoria"
                     readOnly={state.read} 
                     className={state.read ? "text-danger font-weight-bold" : ""}
-                    onChange={(e) => this.setState({ DO: e.target.value })} value={state.categoria} required />
+                    onChange={(e) => this.setState({ DO: e.target.value })} value={state.categoria.toUpperCase()} required />
                 </FormGroup>
               </Col>
               :
@@ -201,7 +203,7 @@ export default class CriarDesenhos extends Component {
                 <Input type="text" name="pre1" id="pre1" placeholder="Pre 1"
                   readOnly={state.read} 
                   className={state.read ? "text-danger font-weight-bold" : ""}
-                  onChange={(e) => this.setState({ pre1: e.target.value })} value={state.pre1} required />
+                  onChange={(e) => this.setState({ pre1: e.target.value })} value={state.pre1.toUpperCase()} required />
               </FormGroup>
             </Col>
             <Col md={3} sm={12}>
@@ -210,7 +212,7 @@ export default class CriarDesenhos extends Component {
                 <Input type="text" name="pre2" id="pre2" placeholder="Pre 2"
                   readOnly={state.read} 
                   className={state.read ? "text-danger font-weight-bold" : ""}
-                  onChange={(e) => this.setState({ pre2: e.target.value })} value={state.pre2} />
+                  onChange={(e) => this.setState({ pre2: e.target.value })} value={state.pre2.toUpperCase()} />
               </FormGroup>
             </Col>
             <Col md={3} sm={12}>
@@ -219,7 +221,7 @@ export default class CriarDesenhos extends Component {
                 <Input type="text" name="pre3" id="pre3" placeholder="Pre 3"
                   readOnly={state.read} 
                   className={state.read ? "text-danger font-weight-bold" : ""}
-                  onChange={(e) => this.setState({ pre3: e.target.value })} value={state.pre3} />
+                  onChange={(e) => this.setState({ pre3: e.target.value })} value={state.pre3.toUpperCase()} />
               </FormGroup>
             </Col>
             <Col md={3} sm={12}>
@@ -228,7 +230,7 @@ export default class CriarDesenhos extends Component {
                 <Input type="text" name="pre4" id="pre4" placeholder="Pre 4"
                   readOnly={state.read} 
                   className={state.read ? "text-danger font-weight-bold" : ""}
-                  onChange={(e) => this.setState({ pre4: e.target.value })} value={state.pre4} />
+                  onChange={(e) => this.setState({ pre4: e.target.value })} value={state.pre4.toUpperCase()} />
               </FormGroup>
             </Col>
           </Row>
