@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import firebaseService from '../../BAAS/services/firebaseService';
-import { ListGroupItem, ListGroup, Spinner, Container, Input, Button, Row, Col } from 'reactstrap';
+import { ListGroupItem, ListGroup, Spinner, Container, Input, Button, Row, Col, Label } from 'reactstrap';
 import { IoIosArrowForward } from 'react-icons/io';
 import { FiSearch } from 'react-icons/fi';
 import './desenhos.css';
@@ -78,8 +78,57 @@ export default class Desenhos extends Component {
                                     onClick={() => this.pesquisar()}>
                                     Pesquisar</Button>
                             </Col>
+
                         </Row>
                     </Col>
+
+                    {/* <legend className="col-form-label col-sm-2">Radio Buttons</legend> */}
+                    {/* <Col md={12} sm={12} className="mb-2 d-flex justify-content-center align-items-center">
+                        <Row>
+                            <Col md={4} sm={12} className="mr-3">
+                                <Label check>
+                                    <Input type="radio" name="radio2" />{' '}
+                                    Todos
+                                </Label>
+                            </Col>
+
+                            <Col md={4} sm={12} className="mr-3">
+                                <Label check>
+                                    <Input type="radio" name="radio2" />{' '}
+                                    Almofadas
+                                </Label>
+                            </Col>
+
+                            <Col md={4} sm={12} className="mr-3">
+                                <Label check>
+                                    <Input type="radio" name="radio2" />{' '}
+                                    Cortinas
+                                </Label>
+                            </Col>
+                            
+                            <Col md={4} sm={12} className="mr-3">
+                                <Label check>
+                                    <Input type="radio" name="radio2" />{' '}
+                                    Mantas
+                                </Label>
+                            </Col>
+
+                            <Col md={4} sm={12} className="mr-3">
+                                <Label check>
+                                    <Input type="radio" name="radio2" />{' '}
+                                    Passadeiras
+                                </Label>
+                            </Col>
+
+                            <Col md={4} sm={12} className="">
+                                <Label check>
+                                    <Input type="radio" name="radio2" />{' '}
+                                    Tapetes
+                                </Label>
+                            </Col>
+                        </Row>
+
+                    </Col> */}
 
                     {false ?
                         <Col md={12} sm={12} className="d-flex justify-content-center align-items-center">
@@ -100,8 +149,8 @@ export default class Desenhos extends Component {
                             </ListGroup>
                         </Col>
                     }
-                </Row>
-            </Container>
+                </Row >
+            </Container >
         ) : (
                 <Container className="d-flex vh-100 justify-content-center align-items-center">
                     <Spinner style={{ width: '6rem', height: '6rem' }} id="spinner" />

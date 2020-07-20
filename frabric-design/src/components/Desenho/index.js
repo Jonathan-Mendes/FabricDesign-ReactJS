@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Container, Spinner } from 'reactstrap';
 import './desenho.css'
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import firebaseService from '../../BAAS/services/firebaseService';
 
 export default class CriarDesenhos extends Component {
@@ -35,6 +37,8 @@ export default class CriarDesenhos extends Component {
       read: true
     }
 
+    this.removeAlert = this.removeAlert.bind(this);
+    this.remove = this.remove.bind(this);
     this.read = this.read.bind(this);
     this.save = this.save.bind(this);
     this.resetValues = this.resetValues.bind(this);
@@ -48,6 +52,39 @@ export default class CriarDesenhos extends Component {
     window.scrollTo(0, 0);
   }
 
+  removeAlert(e) {
+    e.preventDefault();
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='custom-ui'>
+            <h5>Excluir</h5>
+            <p>Deseja Excluir Este Desenho?<br />
+              <span className="font-weight-bold fx-20 color800">{this.state.nomeTecido}</span></p>
+            <div className="text-center">
+              <Button id="nao" color="danger" className="rounded mx-2" onClick={onClose}>Não</Button>
+              <Button id="sim" color="success" className="w-25 rounded"
+                onClick={() => {
+                  this.remove();
+                  onClose();
+                }}>
+                Sim
+				  			</Button>
+            </div>
+          </div>
+        );
+      }
+    });
+  }
+
+  async remove() {
+    let response = await firebaseService.deleteDesenho(this.state.id);
+    if(response)
+      this.props.history.replace('/desenhos')
+    else
+      alert(response)
+  }
+
   async save(e) {
     e.preventDefault();
     const { id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4 } = this.state;
@@ -58,7 +95,7 @@ export default class CriarDesenhos extends Component {
 
   resetValues(e) {
     e.preventDefault();
-    const  state  = this.state;
+    const state = this.state;
     this.setState({
       id: state.idOld,
       nomeTecido: state.nomeTecidoOld,
@@ -119,7 +156,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="nomeTecido">Nome do Tecido</Label>
                 <Input type="text" name="nomeTecido" id="nomeTecido" placeholder="Nome do Tecido"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ nomeTecido: e.target.value })} value={state.nomeTecido.toUpperCase()} required />
               </FormGroup>
@@ -128,7 +165,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="nomeDesenho">Nome do Desenho</Label>
                 <Input type="text" name="nomeDesenho" id="nomeDesenho" placeholder="Nome do Desenho"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ nomeDesenho: e.target.value })} value={state.nomeDesenho.toUpperCase()} required />
               </FormGroup>
@@ -137,7 +174,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="do">Quantidade de Repetição (DO)</Label>
                 <Input type="number" name="do" id="do" placeholder="DO"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ DO: e.target.value })} value={state.DO} required />
               </FormGroup>
@@ -148,7 +185,7 @@ export default class CriarDesenhos extends Component {
                 <FormGroup>
                   <Label for="categoria">Categoria</Label>
                   <Input type="text" name="categoria" id="categoria" placeholder="Categoria"
-                    readOnly={state.read} 
+                    readOnly={state.read}
                     className={state.read ? "text-danger font-weight-bold" : ""}
                     onChange={(e) => this.setState({ DO: e.target.value })} value={state.categoria.toUpperCase()} required />
                 </FormGroup>
@@ -174,7 +211,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="zona1">Zona 1</Label>
                 <Input type="number" name="zona1" id="zona1" placeholder="Zona 1"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ zona1: e.target.value })} value={state.zona1} required />
               </FormGroup>
@@ -183,7 +220,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="zona2">Zona 2</Label>
                 <Input type="number" name="zona2" id="zona2" placeholder="Zona 2"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ zona2: e.target.value })} value={state.zona2} />
               </FormGroup>
@@ -192,7 +229,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="zona3">Zona 3</Label>
                 <Input type="number" name="zona3" id="zona3" placeholder="Zona 3"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ zona3: e.target.value })} value={state.zona3} />
               </FormGroup>
@@ -201,7 +238,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="pre1">Pre 1</Label>
                 <Input type="text" name="pre1" id="pre1" placeholder="Pre 1"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ pre1: e.target.value })} value={state.pre1.toUpperCase()} required />
               </FormGroup>
@@ -210,7 +247,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="pre2">Pre 2</Label>
                 <Input type="text" name="pre2" id="pre2" placeholder="Pre 2"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ pre2: e.target.value })} value={state.pre2.toUpperCase()} />
               </FormGroup>
@@ -219,7 +256,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="pre3">Pre 3</Label>
                 <Input type="text" name="pre3" id="pre3" placeholder="Pre 3"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ pre3: e.target.value })} value={state.pre3.toUpperCase()} />
               </FormGroup>
@@ -228,7 +265,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="pre4">Pre 4</Label>
                 <Input type="text" name="pre4" id="pre4" placeholder="Pre 4"
-                  readOnly={state.read} 
+                  readOnly={state.read}
                   className={state.read ? "text-danger font-weight-bold" : ""}
                   onChange={(e) => this.setState({ pre4: e.target.value })} value={state.pre4.toUpperCase()} />
               </FormGroup>
@@ -243,19 +280,25 @@ export default class CriarDesenhos extends Component {
                     onClick={(e) => this.read(e)}>Editar</Button>
                 </FormGroup>
               </Col>
+              <Col md={12} sm={12}>
+                <FormGroup className="d-flex justify-content-center">
+                  <Button color="danger" className="w-100"
+                    onClick={(e) => this.removeAlert(e)} >Remover</Button>
+                </FormGroup>
+              </Col>
             </ Row>
             :
             <Row>
               <Col md={6} sm={12}>
                 <FormGroup className="d-flex justify-content-center">
                   <Button color="success" className="w-100"
-                  onClick={(e) => this.save(e)}>Salvar</Button>
+                    onClick={(e) => this.save(e)}>Salvar</Button>
                 </FormGroup>
               </Col>
               <Col md={6} sm={12}>
                 <FormGroup className="d-flex justify-content-center">
                   <Button color="danger" className="w-100"
-                  onClick={(e) => this.resetValues(e)}>Cancelar</Button>
+                    onClick={(e) => this.resetValues(e)}>Cancelar</Button>
                 </FormGroup>
               </Col>
             </ Row>

@@ -96,6 +96,15 @@ class FirebaseService {
 			return false;
 		}
 	}
+
+	async deleteDesenho(id) {
+		try{
+			firebaseFirestore.collection('desenhos').doc(id).delete();
+			return true;
+		}catch(error){
+			return error;
+		}
+	}
 }
 
 export default new FirebaseService();

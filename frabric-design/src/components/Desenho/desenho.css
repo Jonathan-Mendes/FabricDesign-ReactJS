@@ -10,10 +10,30 @@ html {
     margin-top: 5%;
 }   
 
+.color800{
+    color: #800000;
+}
+
 #spinner{
     color: #800000 !important;
 }
 
+.custom-ui {
+    font-family: Arial, Helvetica, sans-serif;
+    width: 350px;
+    padding: 30px;
+    text-align: left;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 20px 15px rgba(0, 0, 0, 0.13);
+    color: black;
+    border: solid 2px #800000;
+}
+
+#sim, #nao {
+    width: 80px !important;
+}
+ 
 @media (max-width: 770px) {
     .recuo{
         margin-top: 20%;
