@@ -2,13 +2,29 @@ html {
     scroll-behavior: smooth;
 }
 
+#spinner{
+    color: #800000 !important;
+}
+
+.z-index{
+    z-index: 1;
+} 
+
 .containerH{
     min-height: 100vh;
+}
+
+.op{
+    opacity: .3;
 }
 
 .recuo{
     margin-top: 5%;
 }   
+
+.iconButton{
+    font-size: 25px;
+}
 
 #spinner{
     color: #800000 !important;
@@ -18,4 +34,14 @@ html {
     .recuo{
         margin-top: 20%;
     }   
+}
+
+#divSpinner{
+    height: 100vh !important;
+}
+
+@media (max-width: 750px){
+    #divSpinner{
+        top: 50px !important;
+    }
 }

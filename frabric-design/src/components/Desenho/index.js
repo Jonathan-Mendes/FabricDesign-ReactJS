@@ -62,7 +62,6 @@ export default class CriarDesenhos extends Component {
             <p>Deseja Excluir Este Desenho?<br />
               <span className="font-weight-bold fx-20 color800">{this.state.nomeTecido}</span></p>
             <div className="text-center">
-              <Button id="nao" color="danger" className="rounded mx-2" onClick={onClose}>Não</Button>
               <Button id="sim" color="success" className="w-25 rounded"
                 onClick={() => {
                   this.remove();
@@ -70,6 +69,7 @@ export default class CriarDesenhos extends Component {
                 }}>
                 Sim
 				  			</Button>
+              <Button id="nao" color="danger" className="rounded mx-2" onClick={onClose}>Não</Button>
             </div>
           </div>
         );
@@ -79,7 +79,7 @@ export default class CriarDesenhos extends Component {
 
   async remove() {
     let response = await firebaseService.deleteDesenho(this.state.id);
-    if(response)
+    if (response)
       this.props.history.replace('/desenhos')
     else
       alert(response)
@@ -87,6 +87,7 @@ export default class CriarDesenhos extends Component {
 
   async save(e) {
     e.preventDefault();
+    window.scrollTo(0, 0);
     const { id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4 } = this.state;
     let response = await firebaseService.updateDesenho(id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
     if (response)
@@ -274,16 +275,16 @@ export default class CriarDesenhos extends Component {
 
           {state.read ?
             <Row>
-              <Col md={12} sm={12}>
+              <Col md={6} sm={12}>
                 <FormGroup className="d-flex justify-content-center">
                   <Button color="warning" className="w-100"
                     onClick={(e) => this.read(e)}>Editar</Button>
                 </FormGroup>
               </Col>
-              <Col md={12} sm={12}>
+              <Col md={6} sm={12}>
                 <FormGroup className="d-flex justify-content-center">
-                  <Button color="danger" className="w-100"
-                    onClick={(e) => this.removeAlert(e)} >Remover</Button>
+                  <Button color="danger" className="w-100 fontButton"
+                    onClick={(e) => this.removeAlert(e)}>Excluir</Button>
                 </FormGroup>
               </Col>
             </ Row>

@@ -2,25 +2,48 @@
     margin-top: 8% !important;
 }
 
-/* .pesquisar{
-    z-index: 1;
-    overflow: hidden !important;
-    position: fixed !important;
-    top: 20% !important; 
-} */
+#spinner{
+    color: #800000 !important;
+}
 
 #naoEncontrado{
     color: #800000;
 }
+
+.color800{
+    color: #800000 !important;
+}
+
+.dropItem:hover{
+    background-color: #800000 !important;
+}
+
+.dropItem:hover .buttonItem{
+    color: white !important;
+}
+
+.buttonItem{
+    color: black !important;
+    text-decoration: none !important
+}
+
 
 #pesquisar{
     border-color: #800000 !important;
     color: black !important;
 }
 
-#pesquisar:focus{
+#headerItem{
+    cursor: default;
+}
+
+#pesquisar:focus, .dropItem:focus, #dropdown:focus, #dropdownToggle:focus, #headerItem:focus{
     box-shadow: 0 0 0 0;
     outline: 0;
+}
+
+#dropdown{
+    width: 100%;
 }
 
 .listItem{

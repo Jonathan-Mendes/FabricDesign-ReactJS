@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import firebaseService from '../../BAAS/services/firebaseService';
-import { ListGroupItem, ListGroup, Spinner, Container, Input, Button, Row, Col, Label } from 'reactstrap';
+import {
+    ListGroupItem, ListGroup, Spinner, Container, Input, Button, Row, Col,
+    Dropdown, DropdownToggle, DropdownMenu, DropdownItem
+} from 'reactstrap';
 import { IoIosArrowForward } from 'react-icons/io';
-import { FiSearch } from 'react-icons/fi';
+import { BsFilter } from 'react-icons/bs';
 import './desenhos.css';
 
 export default class Desenhos extends Component {
@@ -12,9 +15,11 @@ export default class Desenhos extends Component {
             desenhos: [],
             desenhosPesquisados: [],
             pesquisar: '',
-            loading: false
+            loading: false,
+            dropdownOpen: false
         }
 
+        this.filter = this.filter.bind(this);
         this.pesquisar = this.pesquisar.bind(this);
     }
 
@@ -41,6 +46,28 @@ export default class Desenhos extends Component {
         })
     }
 
+    filter(categoria) {
+        if (categoria === 'todas') {
+            this.setState({
+                desenhosPesquisados: this.state.desenhosPesquisados = this.state.desenhos
+            })
+        } else{
+            this.state.desenhosPesquisados = [];
+            this.state.desenhos.map((desenho) => {
+                console.log(desenho.categoria.toUpperCase())
+                if (desenho.categoria.toUpperCase() === categoria.toUpperCase()) {
+                    this.state.desenhosPesquisados.push({
+                        id: desenho.id,
+                        nomeTecido: desenho.nomeTecido,
+                        categoria: desenho.categoria
+                    })
+                }
+            })
+            this.setState(this.state);
+        }
+
+    }
+
     pesquisar() {
         this.state.desenhosPesquisados = [];
         if (this.state.pesquisar !== '') {
@@ -50,6 +77,7 @@ export default class Desenhos extends Component {
                     this.state.desenhosPesquisados.push({
                         id: desenho.id,
                         nomeTecido: desenho.nomeTecido,
+                        categoria: desenho.categoria
                     })
                 }
             })
@@ -57,7 +85,6 @@ export default class Desenhos extends Component {
             this.state.desenhosPesquisados = this.state.desenhos;
         }
         this.state.pesquisar = ''
-        console.log(this.state.desenhosPesquisados)
         this.setState(this.state);
     }
 
@@ -67,10 +94,28 @@ export default class Desenhos extends Component {
                 <Row className="recuo">
                     <Col md={12} sm={12} className="my-2">
                         <Row>
-                            <Col md={10} sm={12} className="mb-2">
+                            <Col md={8} sm={12} className="mb-2">
                                 <Input id='pesquisar' type="text" placeholder="Pesquisar"
                                     className="" value={this.state.pesquisar}
                                     onChange={(e) => this.setState({ pesquisar: e.target.value })} />
+                            </Col>
+
+                            <Col md={2} sm={12} className="mb-2 d-flex justify-content-center align-items-center">
+                                <Dropdown id="dropdown" isOpen={this.state.dropdownOpen} toggle={() => this.setState({ dropdownOpen: !this.state.dropdownOpen })}>
+                                    <DropdownToggle id="dropdownToggle" caret color="warning" className="text-center w-100">
+                                        <BsFilter className="" />
+                                    </DropdownToggle>
+                                    <DropdownMenu className="w-100">
+                                        <DropdownItem header className="font-weight-bold color800 text-center" id="headerItem">CATEGORIAS</DropdownItem>
+                                        <DropdownItem divider />
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('todas')}>Todas</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('almofadas')}>Almofadas</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('cortinas')}>Cortinas</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('mantas')}>Mantas</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('passadeiras')}>Passadeiras</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('tapetes')}>Tapetes</Button></DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
                             </Col>
 
                             <Col md={2} sm={12} className="mb-2 d-flex justify-content-center align-items-center">
@@ -78,57 +123,9 @@ export default class Desenhos extends Component {
                                     onClick={() => this.pesquisar()}>
                                     Pesquisar</Button>
                             </Col>
-
                         </Row>
                     </Col>
 
-                    {/* <legend className="col-form-label col-sm-2">Radio Buttons</legend> */}
-                    {/* <Col md={12} sm={12} className="mb-2 d-flex justify-content-center align-items-center">
-                        <Row>
-                            <Col md={4} sm={12} className="mr-3">
-                                <Label check>
-                                    <Input type="radio" name="radio2" />{' '}
-                                    Todos
-                                </Label>
-                            </Col>
-
-                            <Col md={4} sm={12} className="mr-3">
-                                <Label check>
-                                    <Input type="radio" name="radio2" />{' '}
-                                    Almofadas
-                                </Label>
-                            </Col>
-
-                            <Col md={4} sm={12} className="mr-3">
-                                <Label check>
-                                    <Input type="radio" name="radio2" />{' '}
-                                    Cortinas
-                                </Label>
-                            </Col>
-                            
-                            <Col md={4} sm={12} className="mr-3">
-                                <Label check>
-                                    <Input type="radio" name="radio2" />{' '}
-                                    Mantas
-                                </Label>
-                            </Col>
-
-                            <Col md={4} sm={12} className="mr-3">
-                                <Label check>
-                                    <Input type="radio" name="radio2" />{' '}
-                                    Passadeiras
-                                </Label>
-                            </Col>
-
-                            <Col md={4} sm={12} className="">
-                                <Label check>
-                                    <Input type="radio" name="radio2" />{' '}
-                                    Tapetes
-                                </Label>
-                            </Col>
-                        </Row>
-
-                    </Col> */}
 
                     {false ?
                         <Col md={12} sm={12} className="d-flex justify-content-center align-items-center">
