@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Container, Spinner } from 'reactstrap';
 import './desenho.css'
 import { confirmAlert } from 'react-confirm-alert';
+import { MdPhotoCamera } from 'react-icons/md';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import firebaseService from '../../BAAS/services/firebaseService';
 
@@ -21,6 +22,7 @@ export default class CriarDesenhos extends Component {
       pre2Old: '',
       pre3Old: '',
       pre4Old: '',
+      photoOld: '',
       id: '',
       nomeTecido: '',
       nomeDesenho: '',
@@ -33,15 +35,40 @@ export default class CriarDesenhos extends Component {
       pre2: '',
       pre3: '',
       pre4: '',
+      photo: '',
       loading: false,
-      read: true
+      read: true,
+      imagem: null
     }
 
+    this.reload = this.reload.bind(this);
     this.removeAlert = this.removeAlert.bind(this);
     this.remove = this.remove.bind(this);
     this.read = this.read.bind(this);
     this.save = this.save.bind(this);
     this.resetValues = this.resetValues.bind(this);
+    this.handleFile = this.handleFile.bind(this);
+  }
+
+  async handleFile(e) {
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      let reader = new FileReader();
+      let url = reader.readAsDataURL(image);
+
+      if (image.type === "image/png" || image.type === "image/jpeg" || image.type === "image/jpg") {
+        const reader = new FileReader();
+        reader.addEventListener('load', () =>
+          this.setState({ photo: reader.result, imagem: image })
+        );
+        reader.readAsDataURL(e.target.files[0]);
+      } else {
+        this.setState({ imageStatus: true, image: null }, () => {
+          window.setTimeout(() => { this.setState({ imageStatus: false }) }, 4000)
+        })
+        return null;
+      }
+    }
   }
 
   read(e) {
@@ -87,11 +114,55 @@ export default class CriarDesenhos extends Component {
 
   async save(e) {
     e.preventDefault();
+    await this.setState({ loading: false })
     window.scrollTo(0, 0);
-    const { id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4 } = this.state;
-    let response = await firebaseService.updateDesenho(id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
-    if (response)
-      this.setState({ read: true })
+    const { id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4, photo, imagem } = this.state;
+    let response
+    if (imagem !== null) {
+      response = await firebaseService.updateDesenhoPhoto(imagem, id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
+    } else {
+      response = await firebaseService.updateDesenho(id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
+    }
+
+    console.log(response)
+    if (response){
+      this.setState({ loading: true, read: true })
+    }
+  }
+
+  async reload() {
+    const { id } = this.props.match.params;
+    let response = await firebaseService.getDesenho(id);
+    this.setState({
+      id: response.id,
+      nomeTecido: response.nomeTecido,
+      nomeDesenho: response.nomeDesenho,
+      DO: response.DO,
+      categoria: response.categoria,
+      zona1: response.zona1,
+      zona2: response.zona2,
+      zona3: response.zona3,
+      pre1: response.pre1,
+      pre2: response.pre2,
+      pre3: response.pre3,
+      pre4: response.pre4,
+      photo: response.photo,
+      idOld: response.id,
+      nomeTecidoOld: response.nomeTecido,
+      nomeDesenhoOld: response.nomeDesenho,
+      DOOld: response.DO,
+      categoriaOld: response.categoria,
+      zona1Old: response.zona1,
+      zona2Old: response.zona2,
+      zona3Old: response.zona3,
+      pre1Old: response.pre1,
+      pre2Old: response.pre2,
+      pre3Old: response.pre3,
+      pre4Old: response.pre4,
+      photoOld: response.photo,
+      loading: true,
+      read: false
+    })
   }
 
   resetValues(e) {
@@ -110,6 +181,7 @@ export default class CriarDesenhos extends Component {
       pre2: state.pre2Old,
       pre3: state.pre3Old,
       pre4: state.pre4Old,
+      photo: state.photoOld,
       read: true
     })
     window.scrollTo(0, 0);
@@ -131,6 +203,7 @@ export default class CriarDesenhos extends Component {
       pre2: response.pre2,
       pre3: response.pre3,
       pre4: response.pre4,
+      photo: response.photo,
       idOld: response.id,
       nomeTecidoOld: response.nomeTecido,
       nomeDesenhoOld: response.nomeDesenho,
@@ -143,6 +216,7 @@ export default class CriarDesenhos extends Component {
       pre2Old: response.pre2,
       pre3Old: response.pre3,
       pre4Old: response.pre4,
+      photoOld: response.photo,
       loading: true
     })
   }
@@ -153,6 +227,24 @@ export default class CriarDesenhos extends Component {
       <Container className="d-flex justify-content-center align-items-center containerH">
         <Form className="recuo">
           <Row form>
+            <input id="file" ref="file" type="file" onChange={(e) => this.handleFile(e)}></input>
+            <Col md={12} sm={12} className="d-flex justify-content-center align-items-center">
+              {!this.state.read ?
+                <FormGroup>
+                  <label for="file" id="label-file" style={{ opacity: 1 }} className="d-flex justify-content-center align-items-center">
+                    <img id="image-photo-profile" src={this.state.photo} width="350px" height="350px" />
+                    <div className="icon-camera-div d-flex justify-content-center align-items-center">
+                      <MdPhotoCamera id="camera" />
+                    </div>
+                  </label>
+                </FormGroup>
+                :
+                <FormGroup>
+                  <img id="image-photo-profile" src={this.state.photo} width="350px" height="350px" />
+                </FormGroup>
+              }
+
+            </Col>
             <Col md={12} sm={12}>
               <FormGroup>
                 <Label for="nomeTecido">Nome do Tecido</Label>

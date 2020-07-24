@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Container, Spinner } from 'reactstrap';
-import './criarDesenhos.css'
+import './criarDesenhos.css';
+import { MdPhotoCamera } from 'react-icons/md';
+import defaultPhoto from '../../img/default.jpg';
 import firebaseService from '../../BAAS/services/firebaseService';
 
 export default class CriarDesenhos extends Component {
@@ -18,9 +20,12 @@ export default class CriarDesenhos extends Component {
       pre2: '',
       pre3: '',
       pre4: '',
+      imagem: null,
+      photo: defaultPhoto,
       loading: false
     }
 
+    this.handleFile = this.handleFile.bind(this);
     this.save = this.save.bind(this);
     this.resetValues = this.resetValues.bind(this);
   }
@@ -29,8 +34,14 @@ export default class CriarDesenhos extends Component {
     e.preventDefault();
     window.scrollTo(0, 0);
     await this.setState({ loading: true })
-    const { nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4 } = this.state;
-    let response = await firebaseService.createDesenho(nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
+    const { imagem, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4 } = this.state;
+    
+    let response
+    if(imagem !== null){
+      response = await firebaseService.createDesenhoImagem(imagem, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
+    } else {
+      response = await firebaseService.createDesenho(nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
+    }
     if (response)
       this.resetValues()
   }
@@ -48,16 +59,38 @@ export default class CriarDesenhos extends Component {
       pre2: '',
       pre3: '',
       pre4: '',
+      imagem: null,
+      photo: defaultPhoto,
       loading: false
     })
     window.scrollTo(0, 0);
+  }
+
+  async handleFile(e){
+    if (e.target.files[0]) {
+      const image = e.target.files[0];
+      let reader = new FileReader();
+      let url = reader.readAsDataURL(image);
+
+      if (image.type === "image/png" || image.type === "image/jpeg" || image.type === "image/jpg") {
+        const reader = new FileReader();
+        reader.addEventListener('load', () =>
+          this.setState({ photo: reader.result, imagem: image })
+        );
+        reader.readAsDataURL(e.target.files[0]);
+      } else {
+        this.setState({ imageStatus: true, image: null }, () => {
+          window.setTimeout(() => { this.setState({ imageStatus: false }) }, 4000)
+        })
+        return null;
+      }
+    }
   }
 
   render() {
     const state = this.state;
     return (
       <Container className="d-flex justify-content-center align-items-center containerH">
-
         {this.state.loading ?
           <div id="divSpinner" className="position-absolute z-index d-flex justify-content-center align-items-center">
             <Spinner style={{ width: '6rem', height: '6rem' }} id="spinner" />
@@ -69,7 +102,22 @@ export default class CriarDesenhos extends Component {
           className={this.state.loading ?
             "recuo op" : "recuo"
           }>
+
+          <input id="file" disabled={this.state.loading} ref="file" type="file" onChange={(e) => this.handleFile(e)}></input>
+
           <Row form>
+            <Col md={12} sm={12} className="d-flex justify-content-center align-items-center">
+              <FormGroup>
+                <label for="file" id="label-file" style={{ opacity: 1 }} className="d-flex justify-content-center align-items-center">
+                  <img id="image-photo-profile" src={this.state.photo} width="350px" height="350px" />
+
+                  <div className="icon-camera-div d-flex justify-content-center align-items-center">
+                    <MdPhotoCamera id="camera" />
+                  </div>
+                </label>
+              </FormGroup>
+            </Col>
+
             <Col md={12} sm={12}>
               <FormGroup>
                 <Label for="nomeTecido">Nome do Tecido</Label>
@@ -98,7 +146,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="categoria">Categoria</Label>
                 <Input type="select" name="categoria" id="categoria"
-                disabled={this.state.loading}
+                  disabled={this.state.loading}
                   onChange={(e) => this.setState({ categoria: e.target.value })} value={state.categoria} required >
                   <option value=''></option>
                   <option value='almofadas'>Almofadas</option>
@@ -137,7 +185,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="pre1">Pre 1</Label>
                 <Input type="text" name="pre1" id="pre1" placeholder="Pre 1"
-                disabled={this.state.loading}
+                  disabled={this.state.loading}
                   onChange={(e) => this.setState({ pre1: e.target.value })} value={state.pre1} required />
               </FormGroup>
             </Col>
@@ -145,7 +193,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="pre2">Pre 2</Label>
                 <Input type="text" name="pre2" id="pre2" placeholder="Pre 2"
-                disabled={this.state.loading}
+                  disabled={this.state.loading}
                   onChange={(e) => this.setState({ pre2: e.target.value })} value={state.pre2} />
               </FormGroup>
             </Col>
@@ -153,7 +201,7 @@ export default class CriarDesenhos extends Component {
               <FormGroup>
                 <Label for="pre3">Pre 3</Label>
                 <Input type="text" name="pre3" id="pre3" placeholder="Pre 3"
-                disabled={this.state.loading}
+                  disabled={this.state.loading}
                   onChange={(e) => this.setState({ pre3: e.target.value })} value={state.pre3} />
               </FormGroup>
             </Col>

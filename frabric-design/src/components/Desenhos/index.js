@@ -12,6 +12,7 @@ export default class Desenhos extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            desenhosOriginal: [],
             desenhos: [],
             desenhosPesquisados: [],
             pesquisar: '',
@@ -40,6 +41,7 @@ export default class Desenhos extends Component {
         });
 
         this.setState({
+            desenhosOriginal: state.desenhosOriginal = desenhosAux,
             desenhos: state.desenhos = desenhosAux,
             desenhosPesquisados: state.desenhosPesquisados = desenhosAux,
             loading: true
@@ -96,7 +98,7 @@ export default class Desenhos extends Component {
                         <Row>
                             <Col md={8} sm={12} className="mb-2">
                                 <Input id='pesquisar' type="text" placeholder="Pesquisar"
-                                    className="" value={this.state.pesquisar}
+                                    className="" value={this.state.pesquisar.toUpperCase()}
                                     onChange={(e) => this.setState({ pesquisar: e.target.value })} />
                             </Col>
 
@@ -138,7 +140,7 @@ export default class Desenhos extends Component {
                                     return (
                                         <ListGroupItem className="listItem d-flex justify-content-between"
                                             tag="a" href={`/desenho/${desenho.id}`} action>
-                                            <span>{desenho.nomeTecido}</span>
+                                            <span className="text-uppercase">{desenho.nomeTecido}</span>
                                             <span className="ml-5 d-flex justify-content-center align-items-center"><IoIosArrowForward /></span>
                                         </ListGroupItem>
                                     )

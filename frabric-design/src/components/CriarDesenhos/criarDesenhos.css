@@ -30,6 +30,43 @@ html {
     color: #800000 !important;
 }
 
+#file {
+    position: absolute;
+    visibility: hidden;
+  }
+  
+  #label-file:hover {
+    cursor: pointer;
+  }
+  
+  #label-file:hover #image-photo-profile {
+    opacity: .4;
+  }
+  
+  #image-photo-profile {
+    opacity: 1;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+  }
+  
+  .icon-camera-div {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+  
+  .icon-camera-div:hover {
+    opacity: 1;
+  }
+  
+  #camera {
+      width: 80px;
+      height: 80px;
+      color: rgba(0, 0, 0, 0.5)
+  }
+  
+
 @media (max-width: 770px) {
     .recuo{
         margin-top: 20%;
