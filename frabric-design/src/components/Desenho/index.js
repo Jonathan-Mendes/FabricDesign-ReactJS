@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input, Container, Spinner } from 'reactstrap';
+import { Col, Row, Button, Form, FormGroup, Label, Input, Container, Spinner, FormFeedback, FormText } from 'reactstrap';
 import './desenho.css'
 import { confirmAlert } from 'react-confirm-alert';
 import { MdPhotoCamera } from 'react-icons/md';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import firebaseService from '../../BAAS/services/firebaseService';
 
 export default class CriarDesenhos extends Component {
@@ -38,9 +40,15 @@ export default class CriarDesenhos extends Component {
       photo: '',
       loading: false,
       read: true,
-      imagem: null
+      imagem: null,
+      admin: false,
+      password: ''
     }
 
+    this.toastError = this.toastError.bind(this);
+    this.toastSuccess = this.toastSuccess.bind(this);
+    this.unlock = this.unlock.bind(this);
+    this.unlockClick = this.unlockClick.bind(this);
     this.reload = this.reload.bind(this);
     this.removeAlert = this.removeAlert.bind(this);
     this.remove = this.remove.bind(this);
@@ -49,6 +57,74 @@ export default class CriarDesenhos extends Component {
     this.resetValues = this.resetValues.bind(this);
     this.handleFile = this.handleFile.bind(this);
   }
+
+  toastError = () => {
+    toast.error('Senha Incorreta!', {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+
+  toastSuccess = () => {
+    toast.success('Edição Desbloqueada!', {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  }
+
+  unlock(e) {
+    e.preventDefault();
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='custom-ui'>
+            <h5 className="color800">Desbloquear</h5>
+            <p>Insira a Senha para Desbloquear a Edição</p>
+            <Form>
+              <FormGroup>
+                <Input id="input-unlock" type='password' placeholder="******" onChange={(e) => this.setState({ password: e.target.value })} />
+              </FormGroup>
+            </Form>
+            <div className="text-center">
+              <Button color="success" className="buttonUnlock mt-3"
+                onClick={() => {
+                  if (this.state.password === '7502') {
+                    this.setState({ admin: true })
+                    this.toastSuccess();
+                    // window.scrollTo(0, 0);
+                    onClose();
+                  } else {
+                    let input = document.getElementById('input-unlock');
+                    input.value = '';
+                    this.toastError()
+                  }
+                }}>
+                Desbloquear
+				  			</Button>
+              <Button color="danger" className="buttonUnlock mt-3 mx-2"
+                onClick={() => {
+                  onClose();
+                }}>
+                Fechar
+				  			</Button>
+            </div>
+          </div>
+        );
+      }
+    });
+  }
+
+  unlockClick() { }
 
   async handleFile(e) {
     if (e.target.files[0]) {
@@ -125,7 +201,7 @@ export default class CriarDesenhos extends Component {
     }
 
     console.log(response)
-    if (response){
+    if (response) {
       this.setState({ loading: true, read: true })
     }
   }
@@ -225,6 +301,18 @@ export default class CriarDesenhos extends Component {
     const state = this.state;
     return this.state.loading ? (
       <Container className="d-flex justify-content-center align-items-center containerH">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+        <ToastContainer />
         <Form className="recuo">
           <Row form>
             <input id="file" ref="file" type="file" onChange={(e) => this.handleFile(e)}></input>
@@ -365,33 +453,43 @@ export default class CriarDesenhos extends Component {
             </Col>
           </Row>
 
-          {state.read ?
-            <Row>
-              <Col md={6} sm={12}>
-                <FormGroup className="d-flex justify-content-center">
-                  <Button color="warning" className="w-100"
-                    onClick={(e) => this.read(e)}>Editar</Button>
-                </FormGroup>
-              </Col>
-              <Col md={6} sm={12}>
-                <FormGroup className="d-flex justify-content-center">
-                  <Button color="danger" className="w-100 fontButton"
-                    onClick={(e) => this.removeAlert(e)}>Excluir</Button>
-                </FormGroup>
-              </Col>
-            </ Row>
+          {state.admin ?
+            state.read ?
+              <Row>
+                <Col md={6} sm={12}>
+                  <FormGroup className="d-flex justify-content-center">
+                    <Button color="warning" className="w-100"
+                      onClick={(e) => this.read(e)}>Editar</Button>
+                  </FormGroup>
+                </Col>
+                <Col md={6} sm={12}>
+                  <FormGroup className="d-flex justify-content-center">
+                    <Button color="danger" className="w-100 fontButton"
+                      onClick={(e) => this.removeAlert(e)}>Excluir</Button>
+                  </FormGroup>
+                </Col>
+              </ Row>
+              :
+              <Row>
+                <Col md={6} sm={12}>
+                  <FormGroup className="d-flex justify-content-center">
+                    <Button color="success" className="w-100"
+                      onClick={(e) => this.save(e)}>Salvar</Button>
+                  </FormGroup>
+                </Col>
+                <Col md={6} sm={12}>
+                  <FormGroup className="d-flex justify-content-center">
+                    <Button color="danger" className="w-100"
+                      onClick={(e) => this.resetValues(e)}>Cancelar</Button>
+                  </FormGroup>
+                </Col>
+              </ Row>
             :
             <Row>
-              <Col md={6} sm={12}>
+              <Col md={12} sm={12}>
                 <FormGroup className="d-flex justify-content-center">
                   <Button color="success" className="w-100"
-                    onClick={(e) => this.save(e)}>Salvar</Button>
-                </FormGroup>
-              </Col>
-              <Col md={6} sm={12}>
-                <FormGroup className="d-flex justify-content-center">
-                  <Button color="danger" className="w-100"
-                    onClick={(e) => this.resetValues(e)}>Cancelar</Button>
+                    onClick={(e) => this.unlock(e)}>Desbloquear</Button>
                 </FormGroup>
               </Col>
             </ Row>

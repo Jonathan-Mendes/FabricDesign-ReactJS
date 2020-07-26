@@ -30,6 +30,10 @@ html {
     border: solid 2px #800000;
 }
 
+.buttonUnlock{
+    width: 115px;
+}
+
 #sim, #nao {
     width: 80px !important;
 }
