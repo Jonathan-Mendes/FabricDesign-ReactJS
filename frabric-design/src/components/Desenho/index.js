@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Container, Spinner, FormFeedback, FormText } from 'reactstrap';
 import './desenho.css'
 import { confirmAlert } from 'react-confirm-alert';
-import { MdPhotoCamera } from 'react-icons/md';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { MdPhotoCamera } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import firebaseService from '../../BAAS/services/firebaseService';
@@ -48,7 +48,6 @@ export default class CriarDesenhos extends Component {
     this.toastError = this.toastError.bind(this);
     this.toastSuccess = this.toastSuccess.bind(this);
     this.unlock = this.unlock.bind(this);
-    this.unlockClick = this.unlockClick.bind(this);
     this.reload = this.reload.bind(this);
     this.removeAlert = this.removeAlert.bind(this);
     this.remove = this.remove.bind(this);
@@ -101,9 +100,9 @@ export default class CriarDesenhos extends Component {
                   if (this.state.password === '7502') {
                     this.setState({ admin: true })
                     this.toastSuccess();
-                    // window.scrollTo(0, 0);
                     onClose();
                   } else {
+                    this.setState({password: ''})
                     let input = document.getElementById('input-unlock');
                     input.value = '';
                     this.toastError()
@@ -123,8 +122,6 @@ export default class CriarDesenhos extends Component {
       }
     });
   }
-
-  unlockClick() { }
 
   async handleFile(e) {
     if (e.target.files[0]) {
@@ -185,7 +182,7 @@ export default class CriarDesenhos extends Component {
     if (response)
       this.props.history.replace('/desenhos')
     else
-      alert(response)
+      alert('Erro ao deletar desenho')
   }
 
   async save(e) {
@@ -199,8 +196,6 @@ export default class CriarDesenhos extends Component {
     } else {
       response = await firebaseService.updateDesenho(id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4);
     }
-
-    console.log(response)
     if (response) {
       this.setState({ loading: true, read: true })
     }
@@ -368,7 +363,7 @@ export default class CriarDesenhos extends Component {
                   <Input type="text" name="categoria" id="categoria" placeholder="Categoria"
                     readOnly={state.read}
                     className={state.read ? "text-danger font-weight-bold" : ""}
-                    onChange={(e) => this.setState({ DO: e.target.value })} value={state.categoria.toUpperCase()} required />
+                    onChange={(e) => this.setState({ categoria: e.target.value })} value={state.categoria.toUpperCase()} required />
                 </FormGroup>
               </Col>
               :
@@ -388,6 +383,7 @@ export default class CriarDesenhos extends Component {
                 </FormGroup>
               </Col>
             }
+
             <Col md={4} sm={12}>
               <FormGroup>
                 <Label for="zona1">Zona 1</Label>
@@ -488,7 +484,7 @@ export default class CriarDesenhos extends Component {
             <Row>
               <Col md={12} sm={12}>
                 <FormGroup className="d-flex justify-content-center">
-                  <Button color="success" className="w-100"
+                  <Button color="warning" className="w-100"
                     onClick={(e) => this.unlock(e)}>Desbloquear</Button>
                 </FormGroup>
               </Col>
