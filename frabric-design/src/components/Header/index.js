@@ -40,7 +40,7 @@ export default class Header extends Component {
             <div>
                 <Navbar expand="md" className="navColor fixed-top">
                     <NavbarBrand href="/">
-                        <span id="title" className="text-white font-weight-bold">Artesanal Teares</span>
+                        <span id="title" className="text-white font-weight-bold">Fabric Design</span>
                     </NavbarBrand>
 
                     <NavbarToggler onClick={this.toggle}><FaAlignJustify className="text-white" /></NavbarToggler>

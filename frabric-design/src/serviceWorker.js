@@ -127,15 +127,16 @@ function checkValidServiceWorker(swUrl, config) {
       );
     });
 }
-
-export function unregister() {
+export const registerServiceWorker = () => {
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.ready
-      .then(registration => {
-        registration.unregister();
-      })
-      .catch(error => {
-        console.error(error.message);
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').then(function (registration) {
+        // Registration was successful
+        //console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      }).catch(function (err) {
+        // registration failed :(
+        //console.log('ServiceWorker registration failed: ', err);
       });
+    });
   }
 }

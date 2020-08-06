@@ -11,11 +11,11 @@ html {
 }   
 
 .color800{
-    color: #800000;
+    color: #6a0a1b;
 }
 
 #spinner{
-    color: #800000 !important;
+    color: #6a0a1b !important;
 }
 
 .custom-ui {
@@ -27,7 +27,7 @@ html {
     border-radius: 10px;
     box-shadow: 0 20px 15px rgba(0, 0, 0, 0.13);
     color: black;
-    border: solid 2px #800000;
+    border: solid 2px #6a0a1b;
 }
 
 .buttonUnlock{
