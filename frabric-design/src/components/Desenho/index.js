@@ -311,7 +311,7 @@ export default class CriarDesenhos extends Component {
         <Form className="recuo">
           <Row form>
             <input id="file" ref="file" type="file" onChange={(e) => this.handleFile(e)}></input>
-            <Col md={12} sm={12} className="d-flex justify-content-center align-items-center">
+            {/*<Col md={12} sm={12} className="d-flex justify-content-center align-items-center">
               {!this.state.read ?
                 <FormGroup>
                   <label for="file" id="label-file" style={{ opacity: 1 }} className="d-flex justify-content-center align-items-center">
@@ -326,8 +326,7 @@ export default class CriarDesenhos extends Component {
                   <img id="image-photo-profile" src={this.state.photo} width="350px" height="350px" />
                 </FormGroup>
               }
-
-            </Col>
+            </Col>*/}
             <Col md={12} sm={12}>
               <FormGroup>
                 <Label for="nomeTecido">Nome do Tecido</Label>
@@ -375,9 +374,12 @@ export default class CriarDesenhos extends Component {
                     onChange={(e) => this.setState({ categoria: e.target.value })} value={state.categoria} required >
                     <option value=''></option>
                     <option value='almofadas'>Almofadas</option>
+                    <option value='colchas de casal'>Colchas de Casal</option>
+                    <option value='colchas de colteiro'>Colchas de Solteiro</option>
                     <option value='cortinas'>Cortinas</option>
                     <option value='mantas'>Mantas</option>
                     <option value='passadeiras'>Passadeiras</option>
+                    <option value='porta travesseiro'>Porta Travesseiro</option>
                     <option value='tapetes'>Tapetes</option>
                   </Input>
                 </FormGroup>

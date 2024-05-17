@@ -1,4 +1,7 @@
-import firebase from 'firebase';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/database';
+import 'firebase/compat/firestore';
 
 const prodConfig = {
     apiKey: "AIzaSyATI1g7NIpyUaZZ_AGmpYxVawBm4HsfSLs",
@@ -24,8 +27,8 @@ const config = process.env.NODE_ENV === 'production'
     ? prodConfig
     : devConfig;
 
+// Use this to initialize the firebase App
 export const firebaseImpl = firebase.initializeApp(config);
-export const firebaseDatabase = firebase.database();
 export const firebaseFirestore = firebase.firestore();
+export const firebaseDatabase = firebase.database();
 export const firebaseAuth = firebase.auth();
-export const firebaseApp = firebase;

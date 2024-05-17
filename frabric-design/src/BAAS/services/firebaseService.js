@@ -1,4 +1,4 @@
-import { firebaseApp, firebaseFirestore } from '../utils/firebaseUtils';
+import { firebaseFirestore } from '../utils/firebaseUtils';
 
 class FirebaseService {
 	async getDesenhos() {
@@ -109,137 +109,137 @@ class FirebaseService {
 		}
 	}
 
-	async updateDesenhoPhoto(imagem, id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4) {
-		const uploadTask = firebaseApp.storage()
-			.ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name).put(imagem);
+	// async updateDesenhoPhoto(imagem, id, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4) {
+	// 	const uploadTask = firebaseApp.storage()
+	// 		.ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name).put(imagem);
 
-		try {
-			await uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
-				function (snapshot) {
-					switch (snapshot.state) {
-						case firebaseApp.storage.TaskState.PAUSED:
-							break;
-						case firebaseApp.storage.TaskState.RUNNING:
-							break;
-					}
-				}, function (error) {
-					switch (error.code) {
-						case 'storage/unauthorized':
-							return false;
-						case 'storage/canceled':
-							return false;
-						case 'storage/unknown':
-							return false;
-					}
-				}, function() {
-					let photoRef = firebaseApp.storage().ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name);
-					photoRef.getDownloadURL().then(function (url) {
-						firebaseFirestore.collection('desenhos').doc(id).set({
-							id,
-							nomeTecido,
-							nomeDesenho,
-							DO,
-							categoria,
-							zona1,
-							zona2,
-							zona3,
-							pre1,
-							pre2,
-							pre3,
-							pre4,
-							photo: url
-						}).catch(function (error) {
-							return false;
-						});
-					}).catch(function (error) {
-						console.log(error)
-						switch (error.code) {
-							case 'storage/object-not-found':
-								break;
-							case 'storage/unauthorized':
-								break;
-							case 'storage/canceled':
-								break;
-							case 'storage/unknown':
-								break;
-						}
-					});
-				});
-			return true
-		} catch (error) {
-			return false;
-		}
-	}
+	// 	try {
+	// 		await uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED,
+	// 			function (snapshot) {
+	// 				switch (snapshot.state) {
+	// 					case firebaseApp.storage.TaskState.PAUSED:
+	// 						break;
+	// 					case firebaseApp.storage.TaskState.RUNNING:
+	// 						break;
+	// 				}
+	// 			}, function (error) {
+	// 				switch (error.code) {
+	// 					case 'storage/unauthorized':
+	// 						return false;
+	// 					case 'storage/canceled':
+	// 						return false;
+	// 					case 'storage/unknown':
+	// 						return false;
+	// 				}
+	// 			}, function() {
+	// 				let photoRef = firebaseApp.storage().ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name);
+	// 				photoRef.getDownloadURL().then(function (url) {
+	// 					firebaseFirestore.collection('desenhos').doc(id).set({
+	// 						id,
+	// 						nomeTecido,
+	// 						nomeDesenho,
+	// 						DO,
+	// 						categoria,
+	// 						zona1,
+	// 						zona2,
+	// 						zona3,
+	// 						pre1,
+	// 						pre2,
+	// 						pre3,
+	// 						pre4,
+	// 						photo: url
+	// 					}).catch(function (error) {
+	// 						return false;
+	// 					});
+	// 				}).catch(function (error) {
+	// 					console.log(error)
+	// 					switch (error.code) {
+	// 						case 'storage/object-not-found':
+	// 							break;
+	// 						case 'storage/unauthorized':
+	// 							break;
+	// 						case 'storage/canceled':
+	// 							break;
+	// 						case 'storage/unknown':
+	// 							break;
+	// 					}
+	// 				});
+	// 			});
+	// 		return true
+	// 	} catch (error) {
+	// 		return false;
+	// 	}
+	// }
 
-	async createDesenhoImagem(imagem, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4) {
-		const uploadTask = firebaseApp.storage()
-			.ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name).put(imagem);
+	// async createDesenhoImagem(imagem, nomeTecido, nomeDesenho, DO, categoria, zona1, zona2, zona3, pre1, pre2, pre3, pre4) {
+	// 	const uploadTask = firebaseApp.storage()
+	// 		.ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name).put(imagem);
 
-		try {
-			await uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-				function (snapshot) {
-					switch (snapshot.state) {
-						case firebaseApp.storage.TaskState.PAUSED: // or 'paused'
-							break;
-						case firebaseApp.storage.TaskState.RUNNING: // or 'running'
-							break;
-					}
-				}, function (error) {
-					switch (error.code) {
-						case 'storage/unauthorized':
-							// User doesn't have permission to access the object
-							return false;
-						case 'storage/canceled':
-							// User canceled the upload
-							return false;
-						case 'storage/unknown':
-							// Unknown error occurred, inspect error.serverResponse
-							return false;
-					}
-				},function () {
-					let photoRef = firebaseApp.storage().ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name);
-					photoRef.getDownloadURL().then(function (url) {
-						firebaseFirestore.collection('desenhos').add({
-						}).then(function (docRef) {
-							firebaseFirestore.collection('desenhos').doc(docRef.id).set({
-								id: docRef.id,
-								nomeTecido,
-								nomeDesenho,
-								DO,
-								categoria,
-								zona1,
-								zona2,
-								zona3,
-								pre1,
-								pre2,
-								pre3,
-								pre4,
-								photo: url
-							}).catch(function (error) {
-								return false;
-							});
-							return true
-						}).catch(function (error) {
-							switch (error.code) {
-								case 'storage/object-not-found':
-									break;
-								case 'storage/unauthorized':
-									break;
-								case 'storage/canceled':
-									break;
-								case 'storage/unknown':
-									break;
-							}
-							return false;
-						});
-					});
-				}
-			)
-			return true;
-		} catch (error) {
-			return false;
-		}
-	}
+	// 	try {
+	// 		await uploadTask.on(firebaseApp.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+	// 			function (snapshot) {
+	// 				switch (snapshot.state) {
+	// 					case firebaseApp.storage.TaskState.PAUSED: // or 'paused'
+	// 						break;
+	// 					case firebaseApp.storage.TaskState.RUNNING: // or 'running'
+	// 						break;
+	// 				}
+	// 			}, function (error) {
+	// 				switch (error.code) {
+	// 					case 'storage/unauthorized':
+	// 						// User doesn't have permission to access the object
+	// 						return false;
+	// 					case 'storage/canceled':
+	// 						// User canceled the upload
+	// 						return false;
+	// 					case 'storage/unknown':
+	// 						// Unknown error occurred, inspect error.serverResponse
+	// 						return false;
+	// 				}
+	// 			},function () {
+	// 				let photoRef = firebaseApp.storage().ref('photo').child(nomeTecido + '-' + nomeDesenho + '/' + imagem.name);
+	// 				photoRef.getDownloadURL().then(function (url) {
+	// 					firebaseFirestore.collection('desenhos').add({
+	// 					}).then(function (docRef) {
+	// 						firebaseFirestore.collection('desenhos').doc(docRef.id).set({
+	// 							id: docRef.id,
+	// 							nomeTecido,
+	// 							nomeDesenho,
+	// 							DO,
+	// 							categoria,
+	// 							zona1,
+	// 							zona2,
+	// 							zona3,
+	// 							pre1,
+	// 							pre2,
+	// 							pre3,
+	// 							pre4,
+	// 							photo: url
+	// 						}).catch(function (error) {
+	// 							return false;
+	// 						});
+	// 						return true
+	// 					}).catch(function (error) {
+	// 						switch (error.code) {
+	// 							case 'storage/object-not-found':
+	// 								break;
+	// 							case 'storage/unauthorized':
+	// 								break;
+	// 							case 'storage/canceled':
+	// 								break;
+	// 							case 'storage/unknown':
+	// 								break;
+	// 						}
+	// 						return false;
+	// 					});
+	// 				});
+	// 			}
+	// 		)
+	// 		return true;
+	// 	} catch (error) {
+	// 		return false;
+	// 	}
+	// }
 }
 
 export default new FirebaseService();

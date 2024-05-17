@@ -112,9 +112,12 @@ export default class Desenhos extends Component {
                                         <DropdownItem divider />
                                         <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('todas')}>Todas</Button></DropdownItem>
                                         <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('almofadas')}>Almofadas</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('colchas de casal')}>Colchas de Casal</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('colchas de solteiro')}>Colchas de Solteiro</Button></DropdownItem>
                                         <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('cortinas')}>Cortinas</Button></DropdownItem>
                                         <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('mantas')}>Mantas</Button></DropdownItem>
                                         <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('passadeiras')}>Passadeiras</Button></DropdownItem>
+                                        <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('porta travesseiro')}>Porta Travesseiro</Button></DropdownItem>
                                         <DropdownItem className="dropItem"><Button color="link" className="w-100 buttonItem" onClick={() => this.filter('tapetes')}>Tapetes</Button></DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
